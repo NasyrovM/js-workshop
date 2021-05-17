@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        .caption {
+            font-size: 30px;
+            line-height: 200px;
+            text-align: center;
+        }
+        .circle {
+            transition-property: width, height, margin-left, margin-top;
+            transition-duration: 2s;
+            position: fixed;
+            transform: translateX(-50%) translateY(-50%);
+            background-color: red;
+            border-radius: 50%;
+
+            width: 200px;
+            height: 200px;
+            top: 150px;
+            left: 150px;
+        }
+    </style>
+</head>
+<body>
+<button onclick="showCircle()">Show circle </button>
+
+<script>
+    function showCircle(){
+        console.log('He');
+        sizeAnimation(150,150,100).then(div => {
+            div.classList.add("caption");
+            div.append("Hello world!");
+        });
+    }
+
+    function sizeAnimation(cx, cy, r){
+        let div = document.createElement("div");
+        div.style.width =  0;
+        div.style.height = 0;
+        div.style.left = cx + 'px';
+        div.style.top = cy + 'px';
+        div.className = "circle";
+        document.body.append(div);
+        console.log(`${cx} ${cy} ${r}`);
+        return new Promise(resolve => {
+            setTimeout(()=>{
+                div.style.width = r * 2 + 'px';
+                div.style.height = r * 2 + 'px';
+                console.log(`${cx} ${cy} ${r}`);
+
+                div.addEventListener('transitionend', function handler() {
+                    div.removeEventListener('transitionend', handler);
+                    resolve(div);
+                });
+            });
+        });
+    }
+</script>
+
+</body>
+</html>
